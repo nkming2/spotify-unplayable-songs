@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="auth_failed">Failed gaining authorization from Spotify\n(%s)</string>
+	<string name="auth_cancelled">This app must be authorized with Spotify in order to work</string>
+
+	<string name="pref_file" translatable="false">com.nkming.spotify_removed_tracks</string>
+</resources>
