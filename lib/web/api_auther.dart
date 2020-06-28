@@ -6,6 +6,16 @@ import 'package:spotify_removed_tracks/pref.dart';
 import 'package:uuid/uuid.dart';
 
 class ApiAutherImpl extends ApiAuther {
+  static const clientId = "";
+  static const redirectUri = "http://localhost:39393";
+  static const scopes = [
+    "user-library-read",
+    "user-library-modify",
+    "playlist-read-private",
+    "playlist-modify-public",
+    "playlist-modify-private",
+  ];
+
   @override
   auth() async {
     final id = Uuid().v4().replaceAll("-", "");
