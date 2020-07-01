@@ -10,6 +10,7 @@ import 'package:spotify_removed_tracks/api/api.dart';
 import 'package:spotify_removed_tracks/api/api_util.dart';
 import 'package:spotify_removed_tracks/api_auther.dart';
 import 'package:spotify_removed_tracks/asset_util.dart';
+import 'package:spotify_removed_tracks/widget/about_app.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 // Minimum count of items to add per each call of _next()
@@ -106,6 +107,23 @@ class _RemovedTrackState extends State<RemovedTrack> {
     } else {
       return AppBar(
         title: const Text(RemovedTrack.title),
+        actions: [
+          PopupMenuButton<_MenuChoice>(
+            onSelected: (_MenuChoice choice) {
+              if (choice == _MenuChoice.about) {
+                Navigator.pushNamed(context, AboutApp.routeName);
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return _MenuChoice.values.map((e) {
+                return PopupMenuItem<_MenuChoice>(
+                  value: e,
+                  child: Text(e.toDisplayString()),
+                );
+              }).toList();
+            },
+          ),
+        ],
       );
     }
   }
@@ -746,4 +764,20 @@ class _QueryData {
 
   int listIndex;
   final tracks = <Map<String, dynamic>>[];
+}
+
+enum _MenuChoice {
+  about,
+}
+
+extension _MenuChoiceExt on _MenuChoice {
+  String toDisplayString() {
+    switch (this) {
+      case _MenuChoice.about:
+        return "About App";
+
+      default:
+        return describeEnum(this);
+    }
+  }
 }
