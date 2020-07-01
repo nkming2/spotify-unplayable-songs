@@ -15,7 +15,7 @@ class MyAppImpl extends MyApp {
       theme: getLightTheme(),
       darkTheme: getDarkTheme(),
       initialRoute: RemovedTrack.routeName,
-      routes: _router,
+      routes: getRouter(),
       onGenerateRoute: _onGenerateRoute,
     );
   }
@@ -51,7 +51,7 @@ class MyAppImpl extends MyApp {
       }
       Pref.get().resetSpotifyOauthId();
       final from = stateMap["from"];
-      if (!_router.containsKey(from)) {
+      if (!getRouter().containsKey(from)) {
         return null;
       }
       return MaterialPageRoute(
@@ -81,10 +81,6 @@ class MyAppImpl extends MyApp {
     }
     return pairs;
   }
-
-  final _router = <String, WidgetBuilder>{
-    RemovedTrack.routeName: (context) => RemovedTrack(),
-  };
 
   final log = Logger("web.MyAppImpl");
 }

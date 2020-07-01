@@ -6,6 +6,8 @@ import 'package:logging/logging.dart';
 import 'package:spotify_removed_tracks/android/my_app.dart'
     if (dart.library.html) 'package:spotify_removed_tracks/web/my_app.dart'
     as impl;
+import 'package:spotify_removed_tracks/widget/about_app.dart';
+import 'package:spotify_removed_tracks/widget/removed_track.dart';
 
 import 'pref.dart';
 
@@ -37,4 +39,10 @@ abstract class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         primarySwatch: Colors.cyan,
       );
+
+  @protected
+  Map<String, WidgetBuilder> getRouter() => {
+        RemovedTrack.routeName: (context) => RemovedTrack(),
+        AboutApp.routeName: (context) => AboutApp(),
+      };
 }

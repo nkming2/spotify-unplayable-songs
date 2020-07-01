@@ -10,7 +10,8 @@ class MyAppImpl extends MyApp {
       title: getTitle(),
       theme: getLightTheme(),
       darkTheme: getDarkTheme(),
-      home: RemovedTrack(),
+      initialRoute: RemovedTrack.routeName,
+      routes: getRouter(),
     );
   }
 }
