@@ -9,6 +9,7 @@ import 'package:logging/logging.dart';
 import 'package:spotify_removed_tracks/api/api.dart';
 import 'package:spotify_removed_tracks/api/api_util.dart';
 import 'package:spotify_removed_tracks/api_auther.dart';
+import 'package:spotify_removed_tracks/asset_util.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 // Minimum count of items to add per each call of _next()
@@ -110,21 +111,42 @@ class _RemovedTrackState extends State<RemovedTrack> {
   }
 
   Widget _buildContent(BuildContext context) {
-    final body = <Widget>[
-      CustomScrollView(
-        slivers: _buildSubLists(context),
-      ),
-    ];
-    if (_isQuerying) {
-      // Add a progress bar
-      body.add(Align(
-        alignment: Alignment.topLeft,
-        child: LinearProgressIndicator(
-          value: null,
+    if (!_hasNext && _countTracks() == 0) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image(
+              width: 96,
+              height: 96,
+              image: AssetImage(AssetUtil.listPlaceholder(context)),
+            ),
+            SizedBox(height: 16),
+            Text(
+              "All your favorites are good",
+              style:
+                  Theme.of(context).textTheme.headline5.copyWith(fontSize: 20),
+            ),
+          ],
         ),
-      ));
+      );
+    } else {
+      final body = <Widget>[
+        CustomScrollView(
+          slivers: _buildSubLists(context),
+        ),
+      ];
+      if (_isQuerying) {
+        // Add a progress bar
+        body.add(Align(
+          alignment: Alignment.topLeft,
+          child: LinearProgressIndicator(
+            value: null,
+          ),
+        ));
+      }
+      return Stack(children: body);
     }
-    return Stack(children: body);
   }
 
   List<Widget> _buildSubLists(BuildContext context) {
@@ -346,6 +368,7 @@ class _RemovedTrackState extends State<RemovedTrack> {
       }
       return items;
     } else {
+      _hasNext = false;
       return null;
     }
   }
@@ -466,6 +489,14 @@ class _RemovedTrackState extends State<RemovedTrack> {
     return await Future.wait(futures);
   }
 
+  int _countTracks() {
+    int count = 0;
+    for (final l in _playlists) {
+      count += l.tracks.length;
+    }
+    return count;
+  }
+
   void _reloadTracks() {
     _instanceId += 1;
     for (final l in _playlists) {
@@ -475,6 +506,7 @@ class _RemovedTrackState extends State<RemovedTrack> {
     _isPickerMode = false;
 
     _isQuerying = false;
+    _hasNext = true;
     _dataIterator = _generateData().iterator;
     _next();
   }
@@ -486,6 +518,7 @@ class _RemovedTrackState extends State<RemovedTrack> {
   final _lastItemKeys = <ValueKey<String>>[];
   bool _isQuerying = false;
   int _instanceId = 0;
+  bool _hasNext = true;
 
   bool _isPickerMode = false;
   final _pickedItems = <_Playlist, List<_Track>>{};
