@@ -23,10 +23,10 @@ class ApiAutherImpl extends ApiAuther {
     final state = makeState(id, from);
     Pref.get().setSpotifyOauthId(id);
     final url = "https://accounts.spotify.com/authorize"
-        "?client_id=${ApiAuther.clientId}"
+        "?client_id=$clientId"
         "&response_type=token"
-        "&redirect_uri=${Uri.encodeQueryComponent(ApiAuther.redirectUri)}"
-        "&scope=${Uri.encodeQueryComponent(ApiAuther.scopes.join(' '))}"
+        "&redirect_uri=${Uri.encodeQueryComponent(redirectUri)}"
+        "&scope=${Uri.encodeQueryComponent(scopes.join(' '))}"
         "&state=$state";
     window.location.assign(url);
   }
